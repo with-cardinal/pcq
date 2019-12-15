@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const yargs = require("yargs");
 const { Client } = require("pg");
+const fs = require("fs");
 
 const options = yargs.usage("Usage: $0 <script> [args]").demandCommand(1).argv;
 const script = options._[0];
@@ -16,7 +17,9 @@ client.connect(err => {
   }
 });
 
-client.query("SELECT NOW()", (err, res) => {
+var query = fs.readFileSync(script, "utf8");
+
+client.query(query, args, (err, res) => {
   if (err) {
     console.error("Error", err.message);
   } else {

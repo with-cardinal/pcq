@@ -17,12 +17,21 @@ Arguments to the query are specified as `$1`, `$2` in your script.
 
 ## Example Invocation
 
+With a script of:
+
 ```sql
 SELECT * FROM users WHERE id = $1;
 ```
 
+You can run:
+
 ```sh
-$ pcq 80ea2e0a-af98-4ba0-813f-abb49563ab48
+$ pcq script.sql 80ea2e0a-af98-4ba0-813f-abb49563ab48
+```
+
+And will get output like:
+
+```json
 [
   {
     "username": "alan",

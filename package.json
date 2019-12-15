@@ -1,5 +1,6 @@
 {
   "name": "pcq",
+  "license": "MIT",
   "version": "0.0.1",
   "description": "Query tool for postgresql",
   "repository": "git@github.com:nalanj/pcq.git",

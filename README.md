@@ -26,7 +26,7 @@ SELECT * FROM users WHERE id = $1;
 You can run:
 
 ```sh
-$ pcq script.sql 80ea2e0a-af98-4ba0-813f-abb49563ab48
+pcq script.sql 80ea2e0a-af98-4ba0-813f-abb49563ab48
 ```
 
 And will get output like:

@@ -1,0 +1,2 @@
+# pcq
+PostgreSQL Console Query

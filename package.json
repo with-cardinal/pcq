@@ -1,0 +1,21 @@
+{
+  "name": "pcq",
+  "version": "0.0.1",
+  "description": "Query tool for postgresql",
+  "repository": "git@github.com:nalanj/pcq.git",
+  "author": "Alan Johnson <nalanj@fastmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "postgresql",
+    "postgres",
+    "cli"
+  ],
+  "bin": {
+    "pcq": "./src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "pg": "^7.14.0",
+    "yargs": "^15.0.2"
+  }
+}

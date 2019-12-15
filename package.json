@@ -2,7 +2,7 @@
   "name": "pcq",
   "version": "0.0.1",
   "description": "Query tool for postgresql",
-  "repository": "git@github.com:nalanj/pcq.git",
+  "repository": "https://github.com/nalanj/pcq",
   "author": "Alan Johnson <nalanj@fastmail.com>",
   "license": "MIT",
   "keywords": [

@@ -5,7 +5,7 @@ PostgreSQL Console Query
 ## Usage
 
 ```sh
-pcq <script.sql> [args...]
+pcq [options] <script.sql> [args...]
 ```
 
 pcq relies on the `DATABASE_URL` environment variable for connecting to
@@ -14,6 +14,10 @@ The format of `DATABASE_URL` is determined by
 [pg-connection-string](https://github.com/iceddev/pg-connection-string).
 
 Arguments to the query are specified as `$1`, `$2` in your script.
+
+## Options
+
+- `-d`, `--databaseUrl`: Specify the database url. Database url can also be specified by the `DATABASE_URL` environment variable.
 
 ## Example Invocation
 

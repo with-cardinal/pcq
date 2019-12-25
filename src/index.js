@@ -15,15 +15,23 @@ const options = yargs
   .boolean("s")
   .alias("s", "simulate")
   .describe("s", "Simulate the run without execuring queries")
+  .boolean("q")
+  .alias("q", "quiet")
+  .describe("q", "Run quietly. Only output result of queries")
   .demandCommand(1).argv;
 
 const scriptGlob = options._[0];
 const args = options._.slice(1);
 const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
+let error = console.error;
+if (options.quiet) {
+  error = () => {};
+}
+
 const scripts = glob.sync(scriptGlob);
 if (scripts.length === 0) {
-  console.error(chalk.red("-- No scripts match %s"), scriptGlob);
+  error(chalk.red("-- No scripts match %s"), scriptGlob);
   process.exit(1);
 }
 scripts.sort();
@@ -32,14 +40,14 @@ scripts.sort();
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   client.connect(err => {
     if (err) {
-      console.error(chalk.red("-- Error"), err.message);
+      error(chalk.red("-- Error"), err.message);
       process.exit(1);
     }
   });
 
   let counter = 0;
   for (const script of scripts) {
-    console.error(chalk.green("-- Start %s"), script);
+    error(chalk.green("-- Start %s"), script);
 
     try {
       if (!options.simulate) {
@@ -50,11 +58,11 @@ scripts.sort();
           console.log(JSON.stringify(res.rows, null, 2));
         }
       }
-      console.error(chalk.green("-- Finish"), script);
+      error(chalk.green("-- Finish"), script);
     } catch (err) {
-      console.error(chalk.red("-- Error"), err.message);
+      error(chalk.red("-- Error"), err.message);
       client.end();
-      console.error(chalk.red("-- Exiting early due to error"));
+      error(chalk.red("-- Exiting early due to error"));
       process.exit(1);
     }
 
@@ -62,9 +70,5 @@ scripts.sort();
   }
 
   client.end();
-  console.error(
-    chalk.green("-- Ran %s script%s"),
-    counter,
-    counter == 1 ? "" : "s"
-  );
+  error(chalk.green("-- Ran %s script%s"), counter, counter == 1 ? "" : "s");
 })();

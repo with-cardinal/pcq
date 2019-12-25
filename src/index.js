@@ -9,10 +9,13 @@ const glob = require("glob");
 
 const options = yargs
   .usage("Usage: $0 [options] <script> [args]")
-  .demandCommand(1)
   .string("d")
   .alias("d", "databaseUrl")
-  .describe("d", "Specify the database url").argv;
+  .describe("d", "Specify the database url")
+  .boolean("s")
+  .alias("s", "simulate")
+  .describe("s", "Simulate the run without execuring queries")
+  .demandCommand(1).argv;
 
 const scriptGlob = options._[0];
 const args = options._.slice(1);
@@ -39,11 +42,13 @@ scripts.sort();
     console.error(chalk.green("-- Start %s"), script);
 
     try {
-      const query = fs.readFileSync(script, "utf8");
-      const res = await client.query(query, args);
+      if (!options.simulate) {
+        const query = fs.readFileSync(script, "utf8");
+        const res = await client.query(query, args);
 
-      if (res.rows) {
-        console.log(JSON.stringify(res.rows, null, 2));
+        if (res.rows) {
+          console.log(JSON.stringify(res.rows, null, 2));
+        }
       }
       console.error(chalk.green("-- Finish"), script);
     } catch (err) {

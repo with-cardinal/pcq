@@ -14,6 +14,7 @@
     "pcq": "./src/index.js"
   },
   "dependencies": {
+    "chalk": "^3.0.0",
     "dotenv": "^8.2.0",
     "pg": "^7.14.0",
     "yargs": "^15.0.2"

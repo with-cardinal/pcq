@@ -5,6 +5,7 @@ const yargs = require("yargs");
 const { Client } = require("pg");
 const fs = require("fs");
 const chalk = require("chalk");
+const glob = require("glob");
 
 const options = yargs
   .usage("Usage: $0 [options] <script> [args]")
@@ -13,24 +14,29 @@ const options = yargs
   .alias("d", "databaseUrl")
   .describe("d", "Specify the database url").argv;
 
-const script = options._[0];
+const scriptGlob = options._[0];
 const args = options._.slice(1);
 const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
-const scripts = [script];
+const scripts = glob.sync(scriptGlob);
+if (scripts.length === 0) {
+  console.error(chalk.red("-- No scripts match %s"), scriptGlob);
+  process.exit(1);
+}
+scripts.sort();
 
 (async () => {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   client.connect(err => {
     if (err) {
       console.error(chalk.red("-- Error"), err.message);
-      process.exit();
+      process.exit(1);
     }
   });
 
   let counter = 0;
-  for (const file of scripts) {
-    console.error(chalk.green("-- Start %s"), file);
+  for (const script of scripts) {
+    console.error(chalk.green("-- Start %s"), script);
 
     try {
       const query = fs.readFileSync(script, "utf8");

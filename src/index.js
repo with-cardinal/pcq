@@ -17,24 +17,38 @@ const options = yargs
   .describe("s", "Simulate the run without execuring queries")
   .boolean("q")
   .alias("q", "quiet")
-  .describe("q", "Run quietly. Only output result of queries")
-  .demandCommand(1).argv;
-
-const scriptGlob = options._[0];
-const args = options._.slice(1);
-const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
+  .describe("q", "Run quietly. Only output result of queries").argv;
 
 let error = console.error;
 if (options.quiet) {
   error = () => {};
 }
 
-const scripts = glob.sync(scriptGlob);
-if (scripts.length === 0) {
-  error(chalk.red("-- No scripts match %s"), scriptGlob);
-  process.exit(1);
+let stdinQuery;
+let scripts = [];
+let argIndex = 0;
+
+try {
+  stdinQuery = fs.readFileSync(0, "utf8");
+  scripts = ["STDIN"];
+} catch (e) {
+  // ignore
 }
-scripts.sort();
+
+if (!stdinQuery) {
+  const scriptGlob = options._[0];
+  scripts = glob.sync(scriptGlob);
+  if (scripts.length === 0) {
+    error(chalk.red("-- No scripts match %s"), scriptGlob);
+    process.exit(1);
+  }
+  scripts.sort();
+
+  argIndex = 1;
+}
+
+const args = options._.slice(argIndex);
+const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
 (async () => {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
@@ -51,14 +65,20 @@ scripts.sort();
 
     try {
       if (!options.simulate) {
-        const query = fs.readFileSync(script, "utf8");
+        let query;
+        if (stdinQuery) {
+          query = stdinQuery;
+        } else {
+          query = fs.readFileSync(script, "utf8");
+        }
+
         const res = await client.query(query, args);
 
         if (res.rows) {
           console.log(JSON.stringify(res.rows, null, 2));
         }
+        error(chalk.green("-- Finish"), script);
       }
-      error(chalk.green("-- Finish"), script);
     } catch (err) {
       error(chalk.red("-- Error"), err.message);
       client.end();

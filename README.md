@@ -70,7 +70,7 @@ Variable substitution can get a little tricky when redirecting, so be sure to ch
 
 ## Common Uses
 
-PCQ is a simple, flexible tool, with lots of practical uses. We'll document our uses for it on [the Wiki](https://github.com/with-cardinal/pcq/wiki/Migrations).
+PCQ is a simple, flexible tool, with lots of practical uses. You can find documentation for our uses for it on [the Wiki](https://github.com/with-cardinal/pcq/wiki).
 
 ## License
 

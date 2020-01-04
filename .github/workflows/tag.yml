@@ -12,6 +12,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "12.13.1"
+          registry-url: https://registry.npmjs.org/
       - name: Publish
         run: yarn publish
         env:

@@ -1,6 +1,9 @@
 # pcq
 
-PostgreSQL Console Query
+![NPM](https://img.shields.io/npm/v/pcq?style=for-the-badge) 
+![Build Status](https://img.shields.io/github/workflow/status/with-cardinal/pcq/CI?style=for-the-badge)
+
+**P**ostgreSQL **C**onsole **Q**uery
 
 ## Usage
 

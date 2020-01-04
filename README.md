@@ -14,7 +14,7 @@ The format of `DATABASE_URL` is determined by
 [pg-connection-string](https://github.com/iceddev/pg-connection-string).
 
 The script can be a single script, or a set of scripts specified by a glob
-pattern.
+pattern. You can also input a single script as standard input.
 
 Arguments to the query are specified as `$1`, `$2` in your script. The same
 arguments are applied to all scripts when more than one script is run in a
@@ -59,6 +59,14 @@ You could also use a glob to match all sql files in the current directory with:
 ```sh
 pcq *.sql
 ```
+
+Or you could redirect some text into PCQ:
+
+```sh
+echo "SELECT * FROM users WHERE id = 11" | pcq
+```
+
+Variable substitution can get a little tricky when redirecting, so be sure to check your shell's documentation for appropriate escape sequences.
 
 ## Common Uses
 

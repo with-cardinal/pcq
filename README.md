@@ -60,6 +60,10 @@ You could also use a glob to match all sql files in the current directory with:
 pcq *.sql
 ```
 
+## Common Uses
+
+PCQ is a simple, flexible tool, with lots of practical uses. We'll document our uses for it on [the Wiki](https://github.com/with-cardinal/pcq/wiki/Migrations).
+
 ## License
 
 MIT. See LICENSE for more information.

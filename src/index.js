@@ -87,11 +87,15 @@ const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
         }
 
         const res = await client.query(query, args);
-
         if (res.rows) {
           console.log(JSON.stringify(res.rows, null, 2));
         }
-        error(chalk.green("-- Finish"), script);
+
+        error(
+          chalk.green("-- Finish"),
+          script,
+          `(${res.rowCount} ${res.rowCount === 1 ? "row" : "rows"})`
+        );
       }
     } catch (err) {
       error(chalk.red("-- Error"), err.message);

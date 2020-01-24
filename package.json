@@ -1,6 +1,6 @@
 {
   "name": "pcq",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Query tool for postgresql",
   "repository": "https://github.com/with-cardinal/pcq",
   "author": "Alan Johnson <nalanj@withcardinal.com>",

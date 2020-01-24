@@ -65,7 +65,7 @@ const args = options._.slice(argIndex);
 const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
 (async () => {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: dbUrl });
   client.connect(err => {
     if (err) {
       error(chalk.red("-- Error"), err.message);

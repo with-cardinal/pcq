@@ -1,6 +1,6 @@
 # pcq
 
-![NPM](https://img.shields.io/npm/v/pcq?style=for-the-badge) 
+![NPM](https://img.shields.io/npm/v/pcq?style=for-the-badge)
 ![Build Status](https://img.shields.io/github/workflow/status/with-cardinal/pcq/CI?style=for-the-badge)
 
 **P**ostgreSQL **C**onsole **Q**uery
@@ -17,7 +17,7 @@ The format of `DATABASE_URL` is determined by
 [pg-connection-string](https://github.com/iceddev/pg-connection-string).
 
 The script can be a single script, or a set of scripts specified by a glob
-pattern. You can also input a single script as standard input.
+pattern. You can also run a script from stdin by specifying the `--stdin` flag.
 
 Arguments to the query are specified as `$1`, `$2` in your script. The same
 arguments are applied to all scripts when more than one script is run in a
@@ -29,6 +29,7 @@ single invocation.
   specified by the `DATABASE_URL` environment variable.
 - `-s`, `--simulate`: Simulate the execution without actually running any
   queries. Helpful for testing commands.
+- `--stdin`: Read the query from stdin.
 - `-q`, `--quiet`: Only output query results. No errors or status updates are
   output.
 
@@ -66,7 +67,7 @@ pcq *.sql
 Or you could redirect some text into PCQ:
 
 ```sh
-echo "SELECT * FROM users WHERE id = 11" | pcq
+echo "SELECT * FROM users WHERE id = 11" | pcq --stdin
 ```
 
 Variable substitution can get a little tricky when redirecting, so be sure to check your shell's documentation for appropriate escape sequences.

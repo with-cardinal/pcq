@@ -7,11 +7,17 @@ const fs = require("fs");
 const chalk = require("chalk");
 const glob = require("glob");
 
+process.stdin.on("end", function() {
+  console.log("EOF");
+});
+
 const options = yargs
   .usage("Usage: $0 [options] <script> [args]")
   .string("d")
   .alias("d", "databaseUrl")
   .describe("d", "Specify the database url")
+  .boolean("stdin")
+  .describe("stdin", "Read the query from stdin")
   .boolean("s")
   .alias("s", "simulate")
   .describe("s", "Simulate the run without execuring queries")
@@ -28,15 +34,23 @@ let stdinQuery;
 let scripts = [];
 let argIndex = 0;
 
-try {
-  stdinQuery = fs.readFileSync(0, "utf8");
-  scripts = ["STDIN"];
-} catch (e) {
-  // ignore
+if (options.stdin) {
+  try {
+    stdinQuery = fs.readFileSync(process.stdin.fd, "utf8");
+    scripts = ["STDIN"];
+  } catch (e) {
+    error(chalk.red("-- Error"), e.message);
+    process.exit(1);
+  }
 }
 
 if (!stdinQuery) {
   const scriptGlob = options._[0];
+  if (!scriptGlob) {
+    error(chalk.red("-- Error"), "No script specified");
+    process.exit(1);
+  }
+
   scripts = glob.sync(scriptGlob);
   if (scripts.length === 0) {
     error(chalk.red("-- No scripts match %s"), scriptGlob);

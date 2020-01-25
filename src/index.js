@@ -91,11 +91,11 @@ const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
           console.log(JSON.stringify(res.rows, null, 2));
         }
 
-        error(
-          chalk.green("-- Finish"),
-          script,
-          `(${res.rowCount} ${res.rowCount === 1 ? "row" : "rows"})`
-        );
+        let rowMsg = "";
+        if (res.rowCount) {
+          rowMsg = `(${res.rowCount} ${res.rowCount === 1 ? "row" : "rows"})`;
+        }
+        error(chalk.green("-- Finish"), script, rowMsg);
       }
     } catch (err) {
       error(chalk.red("-- Error"), err.message);

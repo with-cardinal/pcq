@@ -5,7 +5,6 @@ const yargs = require("yargs");
 const { Client } = require("pg");
 const fs = require("fs");
 const chalk = require("chalk");
-const glob = require("glob");
 
 process.stdin.on("end", function() {
   console.log("EOF");

@@ -12,12 +12,15 @@ process.stdin.on("end", function() {
 });
 
 const options = yargs
-  .usage("Usage: $0 [options] <script> [args]")
+  .usage("Usage: $0 [options] <scripts> [args]")
   .string("d")
   .alias("d", "databaseUrl")
   .describe("d", "Specify the database url")
   .boolean("stdin")
   .describe("stdin", "Read the query from stdin")
+  .array("a")
+  .alias("a", "arg")
+  .describe("a", "Specify arguments")
   .boolean("s")
   .alias("s", "simulate")
   .describe("s", "Simulate the run without execuring queries")
@@ -31,8 +34,7 @@ if (options.quiet) {
 }
 
 let stdinQuery;
-let scripts = [];
-let argIndex = 0;
+let scripts = options._;
 
 if (options.stdin) {
   try {
@@ -45,23 +47,14 @@ if (options.stdin) {
 }
 
 if (!stdinQuery) {
-  const scriptGlob = options._[0];
-  if (!scriptGlob) {
+  if (scripts.length === 0) {
     error(chalk.red("-- Error"), "No script specified");
     process.exit(1);
   }
 
-  scripts = glob.sync(scriptGlob);
-  if (scripts.length === 0) {
-    error(chalk.red("-- No scripts match %s"), scriptGlob);
-    process.exit(1);
-  }
   scripts.sort();
-
-  argIndex = 1;
 }
 
-const args = options._.slice(argIndex);
 const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
 (async () => {
@@ -86,7 +79,7 @@ const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
           query = fs.readFileSync(script, "utf8");
         }
 
-        const res = await client.query(query, args);
+        const res = await client.query(query, options.args);
         if (res.rows) {
           console.log(JSON.stringify(res.rows, null, 2));
         }

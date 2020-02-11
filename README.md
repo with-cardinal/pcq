@@ -8,7 +8,7 @@
 ## Usage
 
 ```sh
-pcq [options] <script.sql> [args...]
+pcq <scripts> [options]
 ```
 
 pcq relies on the `DATABASE_URL` environment variable for connecting to
@@ -30,6 +30,7 @@ single invocation.
 - `-s`, `--simulate`: Simulate the execution without actually running any
   queries. Helpful for testing commands.
 - `--stdin`: Read the query from stdin.
+- `-a`, `--arg`: Specify an argument for the query.
 - `-q`, `--quiet`: Only output query results. No errors or status updates are
   output.
 
@@ -44,7 +45,7 @@ SELECT * FROM users WHERE id = $1;
 You can run:
 
 ```sh
-pcq script.sql 80ea2e0a-af98-4ba0-813f-abb49563ab48
+pcq script.sql -a 80ea2e0a-af98-4ba0-813f-abb49563ab48
 ```
 
 And will get output like:

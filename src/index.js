@@ -11,7 +11,7 @@ process.stdin.on("end", function() {
 });
 
 const options = yargs
-  .usage("Usage: $0 [options] <scripts> [args]")
+  .usage("Usage: $0 <scripts> [options]")
   .string("d")
   .alias("d", "databaseUrl")
   .describe("d", "Specify the database url")
@@ -78,7 +78,7 @@ const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
           query = fs.readFileSync(script, "utf8");
         }
 
-        const res = await client.query(query, options.args);
+        const res = await client.query(query, options.arg);
         if (res.rows) {
           console.log(JSON.stringify(res.rows, null, 2));
         }

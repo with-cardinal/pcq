@@ -6,7 +6,7 @@ const { Client } = require("pg");
 const fs = require("fs");
 const chalk = require("chalk");
 
-process.stdin.on("end", function() {
+process.stdin.on("end", function () {
   console.log("EOF");
 });
 
@@ -58,7 +58,7 @@ const dbUrl = options.databaseUrl || process.env.DATABASE_URL;
 
 (async () => {
   const client = new Client({ connectionString: dbUrl });
-  client.connect(err => {
+  client.connect((err) => {
     if (err) {
       error(chalk.red("-- Error"), err.message);
       process.exit(1);
